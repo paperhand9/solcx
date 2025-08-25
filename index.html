@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solana Token Creator</title>
+  <link rel="stylesheet" href="style.css" />
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Token Creator</title>
+    <style>
+        :root {
+            --primary: #9945FF;
+            --secondary: #14F195;
+            --dark: #121212;
+            --light: #f4f4f4;
+            --gray: #888;
+            --error: #ff3860;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .wallet-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .wallet-address {
+            font-size: 0.9rem;
+            background-color: rgba(153, 69, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-right: 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--light);
+            font-size: 1rem;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .properties-info {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(20, 241, 149, 0.1);
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .properties-info ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .properties-info li {
+            margin-bottom: 5px;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .success {
+            color: var(--secondary);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .error {
+            color: var(--error);
+            border-left: 4px solid var(--error);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .token-details {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .token-details h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .token-info {
+            word-break: break-all;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            .wallet-section {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .wallet-address {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>Solana Token Creator</h1>
+      <p class="subtitle">Create SPL tokens with metadata on Solana Mainnet</p>
+    </header>
+    
+    <div class="card">
+      <div class="wallet-section">
+        <div>
+          <h3>Wallet Connection</h3>
+          <p id="wallet-address" class="wallet-address">Not connected</p>
+        </div>
+        <button id="connect-wallet" class="btn">Connect Wallet</button>
+      </div>
+    </div>
+    
+    <div class="card">
+      <h3>Token Metadata</h3>
+      <div class="form-group">
+        <label for="token-name">Token Name *</label>
+        <input type="text" id="token-name" placeholder="e.g. My Awesome Token" required />
+      </div>
+      <div class="form-group">
+        <label for="token-symbol">Token Symbol *</label>
+        <input type="text" id="token-symbol" placeholder="e.g. MAT" maxlength="10" required />
+      </div>
+      <div class="form-group">
+        <label for="token-description">Description *</label>
+        <textarea id="token-description" placeholder="Describe your token" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="token-image">Image URL</label>
+        <input type="text" id="token-image" placeholder="https://example.com/token-image.png" />
+      </div>
+      <div class="form-group">
+        <label for="website-url">Website URL</label>
+        <input type="text" id="website-url" placeholder="https://my-token-website.com" />
+      </div>
+      <div class="form-group">
+        <label for="twitter-url">X (Twitter) URL</label>
+        <input type="text" id="twitter-url" placeholder="https://x.com/mytoken" />
+      </div>
+      <div class="form-group">
+        <label for="token-decimals">Decimals</label>
+        <input type="number" id="token-decimals" value="9" min="0" max="9" />
+      </div>
+      <div class="form-group">
+        <label for="token-supply">Initial Supply</label>
+        <input type="number" id="token-supply" value="1000000" min="1" />
+      </div>
+
+      <div class="properties-info">
+        <h4>Default Token Properties:</h4>
+        <ul>
+          <li>Burnable ✓</li>
+          <li>Transferable ✓</li>
+          <li>Minting Authority Revoked ✓</li>
+          <li>Freezing Authority Revoked ✓</li>
+          <li>Update Authority Revoked ✓</li>
+        </ul>
+      </div>
+
+      <button id="create-token" class="btn" style="margin-top: 20px;" disabled>Create Token</button>
+
+      <div id="status" class="status" style="display:none;"></div>
+
+      <div id="token-details" class="token-details" style="display:none;">
+        <h3>Token Created Successfully!</h3>
+        <div class="token-info">
+          <p><strong>Token Address:</strong> <span id="token-address"></span></p>
+          <p><strong>Transaction Signature:</strong> <span id="transaction-signature"></span></p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>This tool creates real SPL tokens on the Solana Mainnet. Transaction fees will apply.</p>
+      <p>Always verify transactions in your wallet before confirming.</p>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/@solana/web3.js@1.70.3/lib/index.iife.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/spl-token@0.20.9/lib/index.iife.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-wallets@0.18.6/lib/index.iife.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@solana/wallet-adapter-base@0.18.6/lib/index.iife.min.js"></script>
+  
+  <script src="app.js"></script>
+</body>
+</html>
